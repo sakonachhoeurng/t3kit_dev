@@ -23,18 +23,18 @@ fi
 
 #echo "Moving TYPO3 temp out of NFS to improve speed"
 
-# Move typo3temp to home to increase performance and avoid problems with filetimes
-if [ ! -d /home/vagrant/typo3temp ]; then
+# Move typo3temp to /tmp to increase performance and avoid problems with filetimes
+if [ ! -d /tmp/typo3temp ]; then
     sudo service apache2 stop
     RESTART_APACHE="1"
 
-    mkdir /home/vagrant/typo3temp
-    sudo chown vagrant:www-data /home/vagrant/typo3temp -R
-    sudo chmod 770 /home/vagrant/typo3temp -R
-    echo -e "Created /home/vagrant/typo3temp"
+    mkdir /tmp/typo3temp
+    sudo chown vagrant:www-data /tmp/typo3temp -R
+    sudo chmod 770 /tmp/typo3temp -R
+    echo -e "Created /tmp/typo3temp"
 fi
 
-#Checking if typo3temp is symlinked to /home/vagrant/typo3temp"
+#Checking if typo3temp is symlinked to /tmp/typo3temp"
 if [ -d /var/www/shared/site ]; then
     cd /var/www/shared/site
     if [ ! -L typo3temp ]; then
@@ -44,8 +44,8 @@ if [ -d /var/www/shared/site ]; then
         fi
 
         sudo rm typo3temp/ -rf
-        sudo ln -s /home/vagrant/typo3temp typo3temp
-        echo -e "Created symlink from typo3temp to /home/vagrant/typo3temp"
+        sudo ln -s /tmp/typo3temp typo3temp
+        echo -e "Created symlink from typo3temp to /tmp/typo3temp"
     fi
 fi
 
@@ -63,18 +63,18 @@ fi
 
 # Adding checks to see if some symlinks are correct (windows fix, t3kit uses symlinks, must be done from inside vagrant vm)
 cd /var/www/shared/site
-if [ ! -L typo3_src ]; then
+if [ -d TYPO3.CMS ] && [ ! -L typo3_src ]; then
     rm typo3_src/ -rf
     rm typo3_src -rf
     ln -s TYPO3.CMS typo3_src
     echo -e "Created symlink typo3_src to TYPO3.CMS"
 fi;
-if [ ! -L index.php ]; then
+if [ -L typo3_src ] && [ ! -L index.php ]; then
     rm index.php
     ln -s typo3_src/index.php index.php
     echo -e "Created symlink index.php to typo3_src/index.php"
 fi;
-if [ ! -L typo3 ]; then
+if [ -L typo3_src ] && [ ! -L typo3 ]; then
     rm typo3/ -rf
     rm typo3 -rf
     ln -s typo3_src/typo3 typo3

@@ -18,3 +18,7 @@ if [ ! -d .git ]; then
     git clone https://github.com/t3kit/t3kit_composer.git .
     composer install
 fi;
+
+cd ../../
+ln -nfs vagrant/Vagrantfile Vagrantfile
+ln -nfs docker/docker-compose.yml docker-compose.yml

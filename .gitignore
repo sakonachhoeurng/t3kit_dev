@@ -1,3 +1,5 @@
-.vagrant/
-shared/*
-!shared/.gitkeep
+/.vagrant/
+/shared/*
+!/shared/.gitkeep
+/Vagrantfile
+/docker-compose.yml

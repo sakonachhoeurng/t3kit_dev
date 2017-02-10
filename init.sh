@@ -21,3 +21,5 @@ fi;
 cd TYPO3.CMS
 composer install
 cd ../../..
+ln -nfs vagrant/Vagrantfile Vagrantfile
+ln -nfs docker/docker-compose.yml docker-compose.yml
